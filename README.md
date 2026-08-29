@@ -35,7 +35,7 @@ Terminal 1 (backend — from the `candidate-registration-backend` folder):
 mvn spring-boot:run
 ```
 
-Backend starts on **http://100.27.185.163:8080/api**
+Backend starts on **https://100.27.185.163:8080/api**
 
 Terminal 2 (frontend — from this folder):
 
@@ -43,7 +43,7 @@ Terminal 2 (frontend — from this folder):
 npm run dev
 ```
 
-Frontend opens at **http://100.27.185.163:5173**
+Frontend opens at **https://100.27.185.163:5173**
 
 ### Login Credentials
 
@@ -160,7 +160,7 @@ Token is cleared and you're redirected to the login page.
 
 ## Test Workflow
 
-1. Open http://100.27.185.163:5173 → redirects to /login
+1. Open https://100.27.185.163:5173 → redirects to /login
 2. Click **Create Test User** (or use test@example.com / Test@123)
 3. Log in with credentials
 4. Redirects to /registrations (empty list)

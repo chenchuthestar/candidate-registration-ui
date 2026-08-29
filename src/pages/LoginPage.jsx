@@ -36,7 +36,7 @@ function LoginPage() {
     setLoading(true)
 
     try {
-      const response = await axios.post('http://100.27.185.163:8080/api/auth/login', {
+      const response = await axios.post('https://100.27.185.163:8080/api/auth/login', {
         email: data.email,
         password: data.password
       })
@@ -62,7 +62,7 @@ function LoginPage() {
     setLoading(true)
 
     try {
-      await axios.post('http://100.27.185.163:8080/api/auth/create-test-user', null, {
+      await axios.post('https://100.27.185.163:8080/api/auth/create-test-user', null, {
         params: {
           email: 'test@example.com',
           password: 'Test@123'
