@@ -1,0 +1,502 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   Main Navbar
+========================= */
+
+.navbar {
+  width: 100%;
+  min-height: 70px;
+  background: linear-gradient(110deg, #031b46, #061d49, #001538);
+  box-shadow: 0 5px 12px rgba(0, 20, 55, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-container {
+  width: 100%;
+  min-height: 70px;
+  padding: 4px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* =========================
+   Brand Section
+========================= */
+
+.brand-section {
+  min-width: 275px;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.logo-wrapper {
+  width: 48px;
+  height: 48px;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.main-star {
+  position: relative;
+  z-index: 2;
+
+  font-size: 36px;
+  color: #ffffff;
+
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.25));
+}
+
+.orbit-line {
+  position: absolute;
+  z-index: 3;
+
+  width: 48px;
+  height: 18px;
+
+  border-bottom: 4px solid #1385ff;
+  border-radius: 50%;
+
+  transform: rotate(-18deg);
+
+  bottom: 8px;
+  left: 0;
+}
+
+.small-star {
+  position: absolute;
+  z-index: 4;
+  color: #34a7ff;
+}
+
+.star-one {
+  right: 0;
+  top: 1px;
+  font-size: 11px;
+}
+
+.star-two {
+  left: 0;
+  top: 26px;
+  font-size: 8px;
+}
+
+.brand-content h1 {
+  margin: 0;
+
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0.8px;
+
+  white-space: nowrap;
+}
+
+.brand-content h1 span {
+  color: #1185ff;
+}
+
+.brand-content p {
+  margin: 3px 0 0;
+
+  font-size: 9px;
+  color: #e9f3ff;
+
+  white-space: nowrap;
+}
+
+/* =========================
+   Navigation Menu
+========================= */
+
+.nav-menu {
+  min-height: 58px;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.nav-item {
+  width: 92px;
+  padding: 3px 6px;
+
+  border-left: 1px solid rgba(32, 135, 255, 0.35);
+
+  color: #ffffff;
+  text-decoration: none;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 2px;
+
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.15;
+
+  position: relative;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.nav-item:last-of-type {
+  border-right: 1px solid rgba(32, 135, 255, 0.35);
+}
+
+.nav-item:hover {
+  background: rgba(13, 122, 255, 0.14);
+  color: #55b3ff;
+}
+
+.nav-item.active {
+  color: #35a5ff;
+}
+
+.nav-item.active::after {
+  content: "";
+
+  position: absolute;
+  bottom: 1px;
+
+  width: 38px;
+  height: 2px;
+
+  border-radius: 5px;
+  background: #1595ff;
+}
+
+.nav-icon {
+  font-size: 18px;
+}
+
+/* =========================
+   Welcome Button
+========================= */
+
+.welcome-button {
+  min-width: 110px;
+
+  margin: 4px 0 4px 10px;
+  padding: 5px 10px;
+
+  border: 1px solid #209aff;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #1199ff, #0758e5);
+
+  color: #ffffff;
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  box-shadow: 0 4px 10px rgba(0, 105, 255, 0.28);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.welcome-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 105, 255, 0.4);
+}
+
+.welcome-button > svg {
+  font-size: 16px;
+}
+
+.welcome-button span {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1px;
+
+  font-size: 9px;
+}
+
+.welcome-button strong {
+  font-size: 11px;
+}
+
+/* =========================
+   Mobile Menu Button
+========================= */
+
+.mobile-menu-button {
+  display: none;
+
+  border: none;
+  background: transparent;
+
+  color: #ffffff;
+  font-size: 24px;
+
+  cursor: pointer;
+}
+
+/* =========================
+   Smaller Desktop / Tablet
+========================= */
+
+@media (max-width: 1250px) {
+  .navbar {
+    min-height: 66px;
+  }
+
+  .navbar-container {
+    min-height: 66px;
+    padding: 4px 10px;
+  }
+
+  .brand-section {
+    min-width: 235px;
+    gap: 7px;
+  }
+
+  .logo-wrapper {
+    width: 44px;
+    height: 44px;
+  }
+
+  .main-star {
+    font-size: 33px;
+  }
+
+  .orbit-line {
+    width: 44px;
+    height: 16px;
+    border-bottom-width: 4px;
+    bottom: 7px;
+  }
+
+  .brand-content h1 {
+    font-size: 19px;
+  }
+
+  .brand-content p {
+    font-size: 8px;
+  }
+
+  .nav-menu {
+    min-height: 54px;
+  }
+
+  .nav-item {
+    width: 78px;
+    padding: 3px 4px;
+    font-size: 9px;
+  }
+
+  .nav-icon {
+    font-size: 16px;
+  }
+
+  .welcome-button {
+    min-width: 96px;
+    margin-left: 7px;
+    padding: 4px 7px;
+  }
+
+  .welcome-button > svg {
+    font-size: 14px;
+  }
+
+  .welcome-button span {
+    font-size: 8px;
+  }
+
+  .welcome-button strong {
+    font-size: 10px;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 980px) {
+  .navbar {
+    min-height: auto;
+  }
+
+  .navbar-container {
+    min-height: 64px;
+    padding: 6px 14px;
+
+    position: relative;
+  }
+
+  .brand-section {
+    min-width: auto;
+  }
+
+  .logo-wrapper {
+    width: 44px;
+    height: 44px;
+  }
+
+  .main-star {
+    font-size: 33px;
+  }
+
+  .orbit-line {
+    width: 44px;
+    height: 16px;
+    border-bottom-width: 4px;
+    bottom: 7px;
+  }
+
+  .small-star {
+    display: none;
+  }
+
+  .brand-content h1 {
+    font-size: 20px;
+  }
+
+  .brand-content p {
+    margin-top: 3px;
+    font-size: 8px;
+  }
+
+  .mobile-menu-button {
+    display: block;
+  }
+
+  .nav-menu {
+    display: none;
+
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+
+    min-height: auto;
+    padding: 8px 14px 14px;
+
+    background: #031b46;
+
+    flex-direction: column;
+
+    box-shadow: 0 10px 18px rgba(0, 20, 55, 0.35);
+  }
+
+  .nav-menu-open {
+    display: flex;
+  }
+
+  .nav-item {
+    width: 100%;
+    min-height: 46px;
+    padding: 7px 10px;
+
+    border: none;
+    border-bottom: 1px solid rgba(32, 135, 255, 0.22);
+
+    flex-direction: row;
+    justify-content: flex-start;
+
+    gap: 9px;
+
+    text-align: left;
+    font-size: 12px;
+  }
+
+  .nav-item:last-of-type {
+    border-right: none;
+  }
+
+  .nav-item.active::after {
+    left: 10px;
+    bottom: 1px;
+  }
+
+  .nav-icon {
+    width: 23px;
+    font-size: 18px;
+  }
+
+  .welcome-button {
+    width: 100%;
+    min-height: 44px;
+
+    margin: 10px 0 0;
+    padding: 7px 10px;
+
+    border-radius: 9px;
+  }
+}
+
+/* =========================
+   Small Mobile
+========================= */
+
+@media (max-width: 480px) {
+  .navbar-container {
+    min-height: 58px;
+    padding: 5px 9px;
+  }
+
+  .logo-wrapper {
+    width: 39px;
+    height: 39px;
+  }
+
+  .main-star {
+    font-size: 29px;
+  }
+
+  .orbit-line {
+    width: 39px;
+    height: 14px;
+    border-bottom-width: 3px;
+    bottom: 6px;
+  }
+
+  .brand-content h1 {
+    font-size: 18px;
+  }
+
+  .brand-content p {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    font-size: 22px;
+  }
+
+  .nav-menu {
+    top: 58px;
+  }
+}
