@@ -45,7 +45,7 @@ function SignUpPage() {
     setLoading(true)
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/signup', {
+      const response = await axios.post('http://100.27.185.163:8080/api/auth/signup', {
         email: data.email,
         password: data.password,
         confirmPassword: data.confirmPassword,
