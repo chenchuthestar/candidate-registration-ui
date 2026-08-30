@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import axios from 'axios'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const loginSchema = yup.object({
   email: yup
     .string()
@@ -36,7 +38,7 @@ function LoginPage() {
     setLoading(true)
 
     try {
-      const response = await axios.post('https://100.27.185.163:8080/api/auth/login', {
+        const response = await axios.post('${API_BASE_URL}/api/auth/login', {
         email: data.email,
         password: data.password
       })
@@ -62,7 +64,7 @@ function LoginPage() {
     setLoading(true)
 
     try {
-      await axios.post('https://100.27.185.163:8080/api/auth/create-test-user', null, {
+      await axios.post('${API_BASE_URL}/api/auth/create-test-user', null, {
         params: {
           email: 'test@example.com',
           password: 'Test@123'
