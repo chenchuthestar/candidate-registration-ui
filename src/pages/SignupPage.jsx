@@ -48,7 +48,7 @@ function SignUpPage() {
     setLoading(true)
 
     try {
-      const response = await axios.post('${API_BASE_URL}/api/auth/signup', {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/signup`, {
         email: data.email,
         password: data.password,
         confirmPassword: data.confirmPassword,

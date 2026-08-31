@@ -38,7 +38,7 @@ function LoginPage() {
     setLoading(true)
 
     try {
-        const response = await axios.post('${API_BASE_URL}/api/auth/login', {
+        const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
         email: data.email,
         password: data.password
       })
@@ -64,7 +64,7 @@ function LoginPage() {
     setLoading(true)
 
     try {
-      await axios.post('${API_BASE_URL}/api/auth/create-test-user', null, {
+      await axios.post(`${API_BASE_URL}/api/auth/create-test-user`, null, {
         params: {
           email: 'test@example.com',
           password: 'Test@123'
