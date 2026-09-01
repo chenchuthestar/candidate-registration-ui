@@ -64,7 +64,7 @@ api.interceptors.response.use(
  * /api/candidates
  */
 export const getCandidates = () => {
-  return api.get('/candidates')
+  return api.get('/api/candidates')
 }
 
 /*
@@ -74,7 +74,7 @@ export const getCandidates = () => {
  * /api/candidates/{id}
  */
 export const getCandidateById = (id) => {
-  return api.get(`/candidates/${id}`)
+  return api.get(`/api/candidates/${id}`)
 }
 
 /*
@@ -87,7 +87,7 @@ export const getCandidateById = (id) => {
  * /api/candidates
  */
 export const createCandidate = (candidateData) => {
-  return api.post('/candidates', candidateData, {
+  return api.post('/api/candidates', candidateData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -101,7 +101,7 @@ export const createCandidate = (candidateData) => {
  * /api/candidates/{id}
  */
 export const updateCandidate = (id, candidateData) => {
-  return api.put(`/candidates/${id}`, candidateData, {
+  return api.put(`/api/candidates/${id}`, candidateData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -115,7 +115,7 @@ export const updateCandidate = (id, candidateData) => {
  * /api/candidates/{id}
  */
 export const deleteCandidate = (id) => {
-  return api.delete(`/candidates/${id}`)
+  return api.delete(`/api/candidates/${id}`)
 }
 
 /*
@@ -128,7 +128,7 @@ export const deleteCandidate = (id) => {
  * /api/candidates/{id}/resume
  */
 export const downloadCandidateResume = (id) => {
-  return api.get(`/candidates/${id}/resume`, {
+  return api.get(`/api/candidates/${id}/resume`, {
     responseType: 'blob'
   })
 }
@@ -144,7 +144,7 @@ export const downloadCandidateResume = (id) => {
  * /api/job-openings
  */
 export const getJobOpenings = () => {
-  return api.get('/job-openings')
+  return api.get('/api/job-openings')
 }
 
 /*
@@ -154,7 +154,7 @@ export const getJobOpenings = () => {
  * /api/job-openings/{id}
  */
 export const getJobOpeningById = (id) => {
-  return api.get(`/job-openings/${id}`)
+  return api.get(`/api/job-openings/${id}`)
 }
 
 /*
@@ -164,7 +164,7 @@ export const getJobOpeningById = (id) => {
  * /api/job-openings
  */
 export const createJobOpening = (jobOpeningData) => {
-  return api.post('/job-openings', jobOpeningData)
+  return api.post('/api/job-openings', jobOpeningData)
 }
 
 /*
@@ -178,7 +178,7 @@ export const updateJobOpening = (
   jobOpeningData
 ) => {
   return api.put(
-    `/job-openings/${id}`,
+    `/api/job-openings/${id}`,
     jobOpeningData
   )
 }
@@ -190,7 +190,7 @@ export const updateJobOpening = (
  * /api/job-openings/{id}
  */
 export const deleteJobOpening = (id) => {
-  return api.delete(`/job-openings/${id}`)
+  return api.delete(`/api/job-openings/${id}`)
 }
 
 /* ==================================================
@@ -204,7 +204,7 @@ export const deleteJobOpening = (id) => {
  * /api/trainings
  */
 export const getTrainings = () => {
-  return api.get('/trainings')
+  return api.get('/api/trainings')
 }
 
 /*
@@ -214,7 +214,7 @@ export const getTrainings = () => {
  * /api/trainings/{id}
  */
 export const getTrainingById = (id) => {
-  return api.get(`/trainings/${id}`)
+  return api.get(`/api/trainings/${id}`)
 }
 
 /*
@@ -224,7 +224,7 @@ export const getTrainingById = (id) => {
  * /api/trainings
  */
 export const createTraining = (trainingData) => {
-  return api.post('/trainings', trainingData)
+  return api.post('/api/trainings', trainingData)
 }
 
 /*
@@ -237,7 +237,7 @@ export const updateTraining = (
   id,
   trainingData
 ) => {
-  return api.put(`/trainings/${id}`, trainingData)
+  return api.put(`/api/trainings/${id}`, trainingData)
 }
 
 /*
@@ -247,7 +247,7 @@ export const updateTraining = (
  * /api/trainings/{id}
  */
 export const deleteTraining = (id) => {
-  return api.delete(`/trainings/${id}`)
+  return api.delete(`/api/trainings/${id}`)
 }
 
 /* ==================================================
