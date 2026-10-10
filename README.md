@@ -47,17 +47,13 @@ Frontend opens at **https://100.27.185.163:5173**
 
 ### Login Credentials
 
-**Test User (auto-created on first login attempt):**
-- Email: `test@example.com`
-- Password: `Test@123`
-
-Or click **Create Test User** button on the login page.
+Use the credentials for your existing account.
 
 ### Prerequisites
 
 - MySQL running locally (or connection configured in the backend's `application.properties`)
 - Java 17+ and Maven for the backend
-- Node.js 18+ for the frontend
+- Node.js 20.19+ or 22.12+ for the frontend (Node 24 is supported)
 
 ## How Authentication Works
 
@@ -130,7 +126,7 @@ src/
 ## Common Issues
 
 ### "Login failed — Invalid email or password"
-→ Wrong credentials. Use test@example.com / Test@123, or create a new test user.
+→ Check the email and password for your account.
 
 ### "Unauthorized (401)" on API call
 → Token expired or missing. Redirect to login happens automatically.
@@ -161,7 +157,7 @@ Token is cleared and you're redirected to the login page.
 ## Test Workflow
 
 1. Open https://100.27.185.163:5173 → redirects to /login
-2. Click **Create Test User** (or use test@example.com / Test@123)
+2. Have an existing account available
 3. Log in with credentials
 4. Redirects to /registrations (empty list)
 5. Click **Candidate Registration** link
@@ -175,3 +171,35 @@ Token is cleared and you're redirected to the login page.
 ---
 
 For backend documentation, see the `candidate-registration-backend` project README.
+
+## Admin signup
+
+Admin registration displays a confirmation message without storing a JWT or signing in.
+Verify the registered email using its emailed link and wait for the configured approver's
+approval. Both steps are required before login; either may happen first. Pending,
+unverified, and rejected accounts receive a specific login error from the backend.
+
+## Local and production API environments
+
+- `npm run dev` loads `.env.development` and uses `http://localhost:8080`.
+- `npm run build` loads `.env.production` and uses `https://candidate-registration-api-production.up.railway.app`.
+- `npm run preview` serves the already-built production bundle, so it uses the production API.
+
+Keep common settings in `.env`. Restart the dev server after editing environment files.
+API URLs are embedded at build time; rebuild/redeploy after changing the production URL.
+Hosting or shell variables named `VITE_API_BASE_URL` override the files, so set any deployment
+variable to the Railway URL or remove it to use `.env.production`.
+
+## Home information page
+
+Home (`/`) displays learning paths, current training schedules, open job opportunities,
+previous calendar month's confirmed placements (India timezone), and published reviews.
+Training schedules and jobs load independently from the backend, with loading, empty,
+and retry states. Closed/expired jobs and completed/cancelled training are excluded.
+
+Confirmed placements and consented reviews can be published in `src/pages/homeContent.js`.
+Each placement needs `id`, `name`, `technology`, `company`, `role`, and an ISO `placedOn`
+date (`YYYY-MM-DD`). Each review needs `id`, `name`, `role`, `technology`, `quote`, and
+`rating` (1–5). These arrays are initially empty because no verified records were supplied.
+Rebuild the frontend after editing this content. Placement results are separate from job
+openings; no placement numbers or testimonials are inferred from existing registrations.

@@ -137,8 +137,11 @@
 
 .dashboard-chevron {
   margin-left: auto;
-  font-size: 22px;
-  line-height: 1;
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  align-self: center;
   transform: rotate(0deg);
   transition: transform .25s ease;
 }
@@ -201,6 +204,7 @@
   place-items: center;
   width: 24px;
   height: 24px;
+  flex: 0 0 24px;
   border-radius: 7px;
   background: #e6f0ff;
   color: #0d6efd;
@@ -801,4 +805,59 @@ textarea.training-control {
 /* Reduce overall card spacing */
 .training-form-card {
   margin-bottom: 18px;
+}
+
+/* Independent candidate column widths with mouse/touch/keyboard resize handles. */
+.resizable-candidate-table { table-layout: fixed; }
+.resizable-candidate-table th { position: relative; padding-right: 16px; }
+.resizable-candidate-table th,
+.resizable-candidate-table td { overflow: hidden; text-overflow: ellipsis; }
+.column-resize-handle {
+  position: absolute; right: 0; top: 0; bottom: 0; width: 10px;
+  cursor: col-resize; touch-action: none; z-index: 1;
+  border-right: 2px solid #c7d7ef;
+}
+.column-resize-handle:hover,
+.column-resize-handle:focus-visible { background: #0d6efd25; border-right-color: #0d6efd; outline: none; }
+.resizable-candidate-table.is-resizing { user-select: none; cursor: col-resize; }
+
+/* Create/edit job opening: colorful framing and refined field states. */
+.job-opening-modal .modal-dialog { max-width: 860px; padding: 12px; }
+.job-opening-modal .modal-content { border: 0; border-radius: 22px; overflow: hidden; box-shadow: 0 25px 80px #061b4a55; }
+.job-opening-modal .modal-header { padding: 25px 28px; border-bottom: 0; background: linear-gradient(115deg, #115bcc, #6651c9 65%, #914bb6); color: white; }
+.job-opening-heading { display: flex; gap: 15px; align-items: center; }
+.job-opening-heading-icon { display: grid; place-items: center; width: 48px; height: 48px; flex: 0 0 48px; border-radius: 15px; background: #ffffff20; border: 1px solid #ffffff35; font-size: 25px; }
+.job-opening-kicker { display: block; color: #e1e5ff; font-size: 10px; font-weight: 700; letter-spacing: 1.7px; margin-bottom: 5px; }
+.job-opening-modal .modal-title { color: #fff; font-size: 24px; font-weight: 700; letter-spacing: -.4px; }
+.job-opening-heading p { color: #eef0ff; font-size: 12px; margin: 6px 0 0; }
+.job-opening-modal .btn-close { filter: invert(1); opacity: .8; margin-left: 16px; flex-shrink: 0; }
+.job-opening-modal .modal-body { padding: 27px 28px; background: linear-gradient(135deg, #f8faff, #fff 60%, #faf7ff); }
+.job-opening-modal .form-label { font-size: 12px; font-weight: 650; color: #435475; margin-bottom: 8px; }
+.job-opening-modal .form-control,
+.job-opening-modal .form-select {
+  min-height: 48px; border: 1px solid #dbe4f1; border-radius: 11px;
+  background-color: #fff; color: #263a5a; font-size: 14px; font-weight: 400;
+  padding: 12px 14px; box-shadow: 0 2px 5px #273e6405;
+  transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.job-opening-modal .form-select { padding-right: 36px; }
+.job-opening-modal .form-control::placeholder { color: #a0acbe; font-size: 13px; font-weight: 300; opacity: 1; }
+.job-opening-modal .form-control:hover,
+.job-opening-modal .form-select:hover { border-color: #b4c9e8; }
+.job-opening-modal .form-control:focus,
+.job-opening-modal .form-select:focus { border-color: #7974de; background-color: #fefdff; box-shadow: 0 0 0 4px #756ade16; outline: none; }
+.job-opening-modal textarea.form-control { min-height: 80px; height: 80px; line-height: 1.6; resize: vertical; }
+.job-opening-modal .modal-footer { padding: 18px 28px; background: #f2f6fc; border-top: 1px solid #e5ecf6; gap: 8px; }
+.job-opening-modal .modal-footer .btn { border-radius: 10px; padding: 10px 19px; font-size: 13px; font-weight: 650; }
+.job-opening-modal .modal-footer .btn-primary { border: 0; background: linear-gradient(110deg, #1268e8, #6555ce); box-shadow: 0 5px 14px #1268e822; }
+.job-opening-modal .modal-footer .btn-secondary { background: #fff; color: #586982; border: 1px solid #cfdced; }
+@media (max-width: 575px) {
+  .job-opening-modal .modal-dialog { margin: 8px; padding: 0; }
+  .job-opening-modal .modal-header,.job-opening-modal .modal-body { padding: 20px; }
+  .job-opening-heading-icon { display: none; }
+  .job-opening-modal .modal-title { font-size: 21px; }
+  .job-opening-modal .modal-footer { padding: 16px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .job-opening-modal .form-control,.job-opening-modal .form-select { transition: none; }
 }

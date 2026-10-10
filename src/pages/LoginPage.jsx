@@ -22,7 +22,6 @@ function LoginPage() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [showTestUserHint, setShowTestUserHint] = useState(false)
 
   const {
     register,
@@ -54,36 +53,6 @@ function LoginPage() {
         err?.response?.data?.message ||
           'Login failed. Please check your email and password.'
       )
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const createTestUser = async () => {
-    setError('')
-    setLoading(true)
-
-    try {
-      await axios.post(`${API_BASE_URL}/api/auth/create-test-user`, null, {
-        params: {
-          email: 'test@example.com',
-          password: 'Test@123'
-        }
-      })
-
-      setError('') 
-      alert('Test user created! Email: test@example.com, Password: Test@123')
-      setShowTestUserHint(true)
-    } catch (err) {
-      if (err?.response?.data?.message?.includes('already')) {
-        setError('Test user already exists. Use email: test@example.com, password: Test@123')
-        setShowTestUserHint(true)
-      } else {
-        setError(
-          err?.response?.data?.message ||
-            'Failed to create test user. Please try again.'
-        )
-      }
     } finally {
       setLoading(false)
     }
@@ -162,32 +131,14 @@ function LoginPage() {
 
               <div className="text-center">
                 <p className="text-muted small mb-3">
-                  First time here? Create an account or use test credentials:
+                  First time here? Create an account:
                 </p>
                 <div className="d-grid gap-2">
                   <Link to="/signup-user" className="btn btn-success btn-sm">
                     📝 Create New Account
                   </Link>
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary btn-sm"
-                    onClick={createTestUser}
-                    disabled={loading}
-                  >
-                    {loading ? 'Creating...' : '🧪 Create Test User'}
-                  </button>
                 </div>
               </div>
-
-              {showTestUserHint && (
-                <div className="alert alert-info mt-3 small" role="alert">
-                  <strong>Test Credentials:</strong>
-                  <br />
-                  Email: test@example.com
-                  <br />
-                  Password: Test@123
-                </div>
-              )}
 
               <div className="text-center mt-3">
                 <small className="text-muted">

@@ -12,7 +12,7 @@ import { MdBusinessCenter } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 
-function Header() {
+function Header({ disableRegistrationLinks = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const closeMenu = () => {
@@ -54,6 +54,7 @@ function Header() {
         <nav className={`nav-menu ${menuOpen ? "nav-menu-open" : ""}`}>
           <NavLink
             to="/"
+            end
             className={({ isActive }) =>
               `nav-item ${isActive ? "active" : ""}`
             }
@@ -63,49 +64,46 @@ function Header() {
             <span>Home</span>
           </NavLink>
 
-          <NavLink
-            to="/jobseeker-registration"
-            className={({ isActive }) =>
-              `nav-item ${isActive ? "active" : ""}`
-            }
-            onClick={closeMenu}
-          >
-            <FaUser className="nav-icon" />
-            <span>Job Seeker Registration</span>
-          </NavLink>
+          {[
+            { to: "/jobseeker-registration", label: "Job Seeker Registration", Icon: FaUser },
+            { to: "/signup", label: "Employer Registration", Icon: FaBuilding },
+            { to: "/login", label: "Employer Login", Icon: FiLogIn },
+          ].map(({ to, label, Icon }) =>
+            disableRegistrationLinks ? (
+              <span
+                key={to}
+                className="nav-item nav-item-disabled"
+                role="link"
+                aria-disabled="true"
+                title={`${label} is unavailable on the dashboard`}
+              >
+                <Icon className="nav-icon" />
+                <span>{label}</span>
+              </span>
+            ) : (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) =>
+                  `nav-item ${isActive ? "active" : ""}`
+                }
+                onClick={closeMenu}
+              >
+                <Icon className="nav-icon" />
+                <span>{label}</span>
+              </NavLink>
+            )
+          )}
 
-          <NavLink
-            to="/signup"
-            className={({ isActive }) =>
-              `nav-item ${isActive ? "active" : ""}`
-            }
-            onClick={closeMenu}
-          >
-            <FaBuilding className="nav-icon" />
-            <span>Employer Registration</span>
-          </NavLink>
-
-          <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              `nav-item ${isActive ? "active" : ""}`
-            }
-            onClick={closeMenu}
-          >
-            <FiLogIn className="nav-icon" />
-            <span>Empoyer Login</span>
-          </NavLink>
-
-          <NavLink
-            to="/company-login"
-            className={({ isActive }) =>
-              `nav-item ${isActive ? "active" : ""}`
-            }
-            onClick={closeMenu}
+          <span
+            className="nav-item nav-item-disabled"
+            role="link"
+            aria-disabled="true"
+            title="Company Owner Login is currently unavailable"
           >
             <MdBusinessCenter className="nav-icon" />
             <span>Company Owner Login(dummy)</span>
-          </NavLink>
+          </span>
 
           <NavLink
             to="/contact"

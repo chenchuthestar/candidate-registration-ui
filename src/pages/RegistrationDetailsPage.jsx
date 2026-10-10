@@ -3,7 +3,9 @@ import { Link, useParams } from 'react-router-dom'
 
 import {
   downloadCandidateResume,
-  getCandidateById
+  getCandidateById,
+  getCurrentUser,
+  updateCandidateStatus
 } from '../api/candidateApi.js'
 
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
@@ -12,6 +14,34 @@ function RegistrationDetailsPage() {
   const { id } = useParams()
 
   const [candidate, setCandidate] = useState(null)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [savingStatus, setSavingStatus] = useState(false)
+  const [statusError, setStatusError] = useState('')
+  const [statusMessage, setStatusMessage] = useState('')
+
+  useEffect(() => {
+    let cancelled = false
+    getCurrentUser().then(response => {
+      if (!cancelled) setIsAdmin(response.data.role === 'Admin')
+    }).catch(() => { if (!cancelled) setIsAdmin(false) })
+    return () => { cancelled = true }
+  }, [])
+
+  const handleStatusChange = async (active) => {
+    if (savingStatus || !isAdmin) return
+    setSavingStatus(true)
+    setStatusError('')
+    setStatusMessage('')
+    try {
+      const response = await updateCandidateStatus(id, active)
+      setCandidate(response.data)
+      setStatusMessage(`Candidate marked ${active ? 'active' : 'inactive'} successfully.`)
+    } catch (err) {
+      setStatusError(err.response?.status === 403
+        ? 'Only admins can change candidate status.'
+        : 'Unable to update candidate status. Please try again.')
+    } finally { setSavingStatus(false) }
+  }
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [downloadError, setDownloadError] = useState('')
@@ -232,7 +262,7 @@ function RegistrationDetailsPage() {
     <div className="row justify-content-center">
       <div className="col-lg-9">
         <div className="card app-card p-4">
-          <div className="d-flex justify-content-between align-items-center mb-4">
+          <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
             <h4 className="mb-0">
               Candidate Details (ID: {candidate.id})
             </h4>
@@ -244,6 +274,28 @@ function RegistrationDetailsPage() {
               Back
             </Link>
           </div>
+
+          <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 rounded border bg-light p-3 mb-4">
+            <div>Candidate status: <span className={`badge ${candidate.active === false ? 'bg-secondary' : 'bg-success'}`}>{candidate.active === false ? 'Inactive' : 'Active'}</span></div>
+            {isAdmin && <div className="d-flex align-items-center gap-2">
+              <div className="form-check form-switch mb-0 d-flex align-items-center gap-2">
+                <input
+                  id="candidate-status"
+                  className="form-check-input mt-0"
+                  type="checkbox"
+                  role="switch"
+                  style={{ width: '2.75em', height: '1.4em', cursor: savingStatus ? 'wait' : 'pointer' }}
+                  checked={candidate.active !== false}
+                  disabled={savingStatus}
+                  onChange={event => handleStatusChange(event.target.checked)}
+                />
+                <label htmlFor="candidate-status" className="form-check-label">Active candidate</label>
+              </div>
+              {savingStatus && <span role="status">Saving…</span>}
+            </div>}
+          </div>
+          {statusError && <div className="alert alert-danger" role="alert">{statusError}</div>}
+          {statusMessage && <div className="alert alert-success" role="status">{statusMessage}</div>}
 
           {/* Personal Details */}
           <div className="mb-4">

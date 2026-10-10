@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import DashboardSidebar from '../components/DashboardSidebar.jsx'
 import './RegistrationsPage.css'
+import ResizableCandidateTable from '../components/ResizableCandidateTable.jsx'
 import {
   createJobOpening,
   deleteCandidate,
@@ -20,6 +22,7 @@ const createInitialJobForm = () => ({
   jobTitle: '',
   companyName: '',
   location: '',
+  candidateType: 'Fresher',
   minExperience: '',
   maxExperience: '',
   jobType: 'Full Time',
@@ -47,6 +50,7 @@ const createInitialTrainingForm = () => ({
 })
 
 function RegistrationsPage() {
+  const location = useLocation()
   const [activeSection, setActiveSection] = useState('candidates')
 
   /* Candidate state */
@@ -55,6 +59,7 @@ function RegistrationsPage() {
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
   const [filterType, setFilterType] = useState('All')
+  const [filterJobCategory, setFilterJobCategory] = useState('All')
   const [candidateToDelete, setCandidateToDelete] = useState(null)
   const [deleting, setDeleting] = useState(false)
   const [downloadingResumeId, setDownloadingResumeId] = useState(null)
@@ -170,6 +175,14 @@ function RegistrationsPage() {
     fetchCandidates()
   }, [])
 
+  useEffect(() => {
+    const section = new URLSearchParams(location.search).get('section')
+    if (['candidates', 'jobs', 'add-training', 'list-trainings'].includes(section)) {
+      handleSectionChange(section)
+      if (section.includes('training')) setTrainingsExpanded(true)
+    }
+  }, [location.search])
+
   const handleSectionChange = (section) => {
     setActiveSection(section)
     setJobSuccessMessage('')
@@ -234,6 +247,7 @@ function RegistrationsPage() {
       jobTitle: job.jobTitle || job.title || '',
       companyName: job.companyName || job.company || '',
       location: job.location || '',
+      candidateType: job.candidateType || (Number(job.minExperience) > 0 || Number(job.maxExperience) > 0 ? 'Experienced' : 'Fresher'),
       minExperience:
         job.minExperience !== null && job.minExperience !== undefined
           ? job.minExperience
@@ -294,11 +308,11 @@ function RegistrationsPage() {
         description: jobForm.description.trim(),
         requiredSkills: jobForm.requiredSkills.trim(),
         minExperience:
-          jobForm.minExperience === ''
+          jobForm.candidateType === 'Fresher' || jobForm.minExperience === ''
             ? null
             : Number(jobForm.minExperience),
         maxExperience:
-          jobForm.maxExperience === ''
+          jobForm.candidateType === 'Fresher' || jobForm.maxExperience === ''
             ? null
             : Number(jobForm.maxExperience),
         closingDate: jobForm.closingDate || null
@@ -545,9 +559,12 @@ function RegistrationsPage() {
       const matchesFilter =
         filterType === 'All' || candidate.candidateType === filterType
 
-      return matchesSearch && matchesFilter
+      const matchesJobCategory =
+        filterJobCategory === 'All' || candidate.jobCategory === filterJobCategory
+
+      return matchesSearch && matchesFilter && matchesJobCategory
     })
-  }, [candidates, search, filterType])
+  }, [candidates, search, filterType, filterJobCategory])
 
   const filteredJobOpenings = useMemo(() => {
     const normalizedSearch = jobSearch.trim().toLowerCase()
@@ -748,67 +765,7 @@ function RegistrationsPage() {
     <div className="registrations-page container-fluid p-0">
       <div className="row g-3 g-xl-4 dashboard-shell">
         <div className="col-12 col-md-3 col-xl-2 dashboard-sidebar-column">
-          <aside className="dashboard-sidebar">
-            <div className="dashboard-sidebar-title">
-              <div className="dashboard-sidebar-title-icon">✦</div>
-              <div>
-                <span className="dashboard-sidebar-kicker">WORKSPACE</span>
-                <h6>Dashboard Menu</h6>
-              </div>
-            </div>
-
-            <nav className="dashboard-menu" aria-label="Dashboard navigation">
-              <button
-                type="button"
-                className={`dashboard-menu-item ${activeSection === 'candidates' ? 'active' : ''}`}
-                onClick={() => handleSectionChange('candidates')}
-              >
-                <span className="dashboard-menu-icon">👥</span>
-                <span className="dashboard-menu-label">Registered Candidates</span>
-              </button>
-
-              <button
-                type="button"
-                className={`dashboard-menu-item ${activeSection === 'jobs' ? 'active' : ''}`}
-                onClick={() => handleSectionChange('jobs')}
-              >
-                <span className="dashboard-menu-icon">💼</span>
-                <span className="dashboard-menu-label">Job Openings</span>
-              </button>
-
-              <button
-                type="button"
-                className={`dashboard-menu-item ${activeSection === 'add-training' || activeSection === 'list-trainings' ? 'active' : ''}`}
-                onClick={() => setTrainingsExpanded((previous) => !previous)}
-                aria-expanded={trainingsExpanded}
-              >
-                <span className="dashboard-menu-icon">🎓</span>
-                <span className="dashboard-menu-label">Trainings</span>
-                <span className={`dashboard-chevron ${trainingsExpanded ? 'expanded' : ''}`}>⌄</span>
-              </button>
-
-              <div className={`training-submenu ${trainingsExpanded ? 'open' : ''}`}>
-                <div className="training-submenu-inner">
-                  <button
-                    type="button"
-                    className={`training-submenu-item ${activeSection === 'add-training' ? 'active' : ''}`}
-                    onClick={openAddTraining}
-                  >
-                    <span className="training-submenu-dot">＋</span>
-                    <span>Schedule Training</span>
-                  </button>
-                  <button
-                    type="button"
-                    className={`training-submenu-item ${activeSection === 'list-trainings' ? 'active' : ''}`}
-                    onClick={() => handleSectionChange('list-trainings')}
-                  >
-                    <span className="training-submenu-dot">☰</span>
-                    <span>Training List</span>
-                  </button>
-                </div>
-              </div>
-            </nav>
-          </aside>
+          <DashboardSidebar activeSection={activeSection} onSectionChange={handleSectionChange} trainingsExpanded={trainingsExpanded} onToggleTrainings={() => setTrainingsExpanded(value => !value)} openAddTraining={openAddTraining} />
         </div>
 
         <main className="col-12 col-md-9 col-xl-10 dashboard-content-column">
@@ -827,7 +784,7 @@ function RegistrationsPage() {
 
               <div className="card app-card p-3 mb-4">
                 <div className="row g-2">
-                  <div className="col-md-7">
+                  <div className="col-md-6">
                     <input
                       type="text"
                       className="form-control"
@@ -837,9 +794,10 @@ function RegistrationsPage() {
                     />
                   </div>
 
-                  <div className="col-md-5">
+                  <div className="col-md-3">
                     <select
                       className="form-select"
+                      aria-label="Filter by candidate type"
                       value={filterType}
                       onChange={(event) =>
                         setFilterType(event.target.value)
@@ -848,6 +806,18 @@ function RegistrationsPage() {
                       <option value="All">All Candidate Types</option>
                       <option value="Fresher">Fresher</option>
                       <option value="Experienced">Experienced</option>
+                    </select>
+                  </div>
+                  <div className="col-md-3">
+                    <select
+                      className="form-select"
+                      aria-label="Filter by job category"
+                      value={filterJobCategory}
+                      onChange={(event) => setFilterJobCategory(event.target.value)}
+                    >
+                      <option value="All">All Job Categories</option>
+                      <option value="IT_Job">IT Job</option>
+                      <option value="Non_IT_Job">Non-IT Job</option>
                     </select>
                   </div>
                 </div>
@@ -868,20 +838,7 @@ function RegistrationsPage() {
               ) : (
                 <div className="card app-card p-3">
                   <div className="table-responsive">
-                    <table className="table table-hover align-middle registrations-table">
-                      <thead className="table-light">
-                        <tr>
-                          <th>ID</th>
-                          <th>Full Name</th>
-                          <th>Email</th>
-                          <th>Mobile</th>
-                          <th>Type</th>
-                          <th>Job Category</th>
-                          <th>Education Records</th>
-                          <th>Experience Records</th>
-                          <th style={{ minWidth: '240px' }}>Actions</th>
-                        </tr>
-                      </thead>
+                    <ResizableCandidateTable>
 
                       <tbody>
                         {filteredCandidates.map((candidate) => (
@@ -969,7 +926,7 @@ function RegistrationsPage() {
                           </tr>
                         ))}
                       </tbody>
-                    </table>
+                    </ResizableCandidateTable>
                   </div>
                 </div>
               )}
@@ -1527,10 +1484,11 @@ function RegistrationsPage() {
 
       {showJobForm && (
         <div
-          className="modal d-block"
+          className="modal d-block job-opening-modal"
           tabIndex="-1"
           role="dialog"
           aria-modal="true"
+          aria-labelledby="job-opening-title"
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.55)',
             overflowY: 'auto'
@@ -1540,9 +1498,16 @@ function RegistrationsPage() {
             <div className="modal-content">
               <form onSubmit={handleCreateJobOpening}>
                 <div className="modal-header">
-                  <h5 className="modal-title">
-                    {editingJob ? 'Edit Job Opening' : 'Create Job Opening'}
-                  </h5>
+                  <div className="job-opening-heading">
+                    <span className="job-opening-heading-icon" aria-hidden="true">✦</span>
+                    <div>
+                      <span className="job-opening-kicker">CAREER OPPORTUNITIES</span>
+                      <h5 className="modal-title" id="job-opening-title">
+                        {editingJob ? 'Edit Job Opening' : 'Create Job Opening'}
+                      </h5>
+                      <p>Connect the right talent with their next opportunity.</p>
+                    </div>
+                  </div>
 
                   <button
                     type="button"
@@ -1609,6 +1574,14 @@ function RegistrationsPage() {
                       />
                     </div>
 
+                    <div className="col-md-6">
+                      <label htmlFor="job-candidate-type" className="form-label">Job opening For?</label>
+                      <select id="job-candidate-type" name="candidateType" className="form-select" value={jobForm.candidateType} onChange={handleJobFormChange}>
+                        <option value="Fresher">Fresher</option>
+                        <option value="Experienced">Experienced</option>
+                      </select>
+                    </div>
+                    {jobForm.candidateType === 'Experienced' && <>
                     <div className="col-md-3">
                       <label className="form-label">
                         Minimum Experience
@@ -1638,6 +1611,8 @@ function RegistrationsPage() {
                         placeholder="5"
                       />
                     </div>
+
+                    </>}
 
                     <div className="col-md-4">
                       <label className="form-label">Job Type</label>
@@ -1728,7 +1703,7 @@ function RegistrationsPage() {
                       <textarea
                         name="description"
                         className="form-control"
-                        rows="4"
+                        rows="2"
                         value={jobForm.description}
                         onChange={handleJobFormChange}
                         placeholder="Enter job responsibilities and requirements"

@@ -9,6 +9,7 @@ import EducationDetailsForm from '../components/EducationDetailsForm.jsx'
 import ExperienceDetailsForm from '../components/ExperienceDetailsForm.jsx'
 import ReviewDetails from '../components/ReviewDetails.jsx'
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
+import DashboardSidebar from '../components/DashboardSidebar.jsx'
 
 import { createCandidate } from '../api/candidateApi.js'
 
@@ -31,7 +32,7 @@ const STEP_ORDER_FRESHER = [
   'review'
 ]
 
-function JobSeekerRegistrationPage() {
+function JobSeekerRegistrationPage({ dashboardMode = false }) {
   const navigate = useNavigate()
 
   const [step, setStep] = useState('personal')
@@ -248,7 +249,7 @@ function JobSeekerRegistrationPage() {
 
       setStep('personal')
 
-      navigate('/a', {
+      navigate('/success', {
         state: {
           id: candidateId,
           fullName: payload.fullName
@@ -300,8 +301,9 @@ function JobSeekerRegistrationPage() {
   }
 
   return (
-    <div className="row justify-content-center">
-      <div className="col-lg-9">
+    <div className={dashboardMode ? 'row g-3 g-xl-4 dashboard-shell' : 'row justify-content-center'}>
+      {dashboardMode && <div className="col-12 col-md-3 col-xl-2 dashboard-sidebar-column"><DashboardSidebar /></div>}
+      <div className={dashboardMode ? 'col-12 col-md-9 col-xl-10 dashboard-content-column' : 'col-lg-9'}>
         <div className="card app-card p-4">
           <ProgressStepper
             candidateType={candidateType}

@@ -175,6 +175,17 @@ body {
   color: #55b3ff;
 }
 
+.nav-item.nav-item-disabled,
+.nav-item.nav-item-disabled:hover {
+  color: #7f8ba0;
+  background: rgba(128, 128, 128, 0.08);
+  cursor: not-allowed;
+}
+
+.nav-item-disabled .nav-icon {
+  color: inherit;
+}
+
 .nav-item.active {
   color: #35a5ff;
 }

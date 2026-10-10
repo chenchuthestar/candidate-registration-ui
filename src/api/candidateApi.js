@@ -77,6 +77,9 @@ export const getCandidateById = (id) => {
   return api.get(`/api/candidates/${id}`)
 }
 
+export const getCurrentUser = () => api.get('/api/auth/me')
+export const updateCandidateStatus = (id, active) => api.patch(`/api/candidates/${id}/status`, { active })
+
 /*
  * Create new candidate.
  *

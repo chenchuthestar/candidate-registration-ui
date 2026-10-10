@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -16,7 +16,11 @@ const signupSchema = yup.object({
   password: yup
     .string()
     .required('Password is required')
-    .min(6, 'Password must be at least 6 characters'),
+    .min(8, 'Password must be at least 8 characters')
+    .matches(/[A-Z]/, 'Password must contain an uppercase letter')
+    .matches(/[a-z]/, 'Password must contain a lowercase letter')
+    .matches(/[0-9]/, 'Password must contain a number')
+    .matches(/[@$!%*?&]/, 'Password must contain a special character (@$!%*?&)'),
   confirmPassword: yup
     .string()
     .required('Confirm password is required')
@@ -28,7 +32,7 @@ const signupSchema = yup.object({
 })
 
 function SignUpPage() {
-  const navigate = useNavigate()
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -55,16 +59,7 @@ function SignUpPage() {
         role: data.role
       })
 
-      // Store token in localStorage
-      localStorage.setItem('authToken', response.data.token)
-      localStorage.setItem('userEmail', response.data.email)
-
-      setSuccess('Account created successfully! Redirecting...')
-      
-      // Redirect to registrations page after 1.5 seconds
-      setTimeout(() => {
-        navigate('/registrations')
-      }, 1500)
+      setSuccess(response.data.message)
     } catch (err) {
       setError(
         err?.response?.data?.message ||

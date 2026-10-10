@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -32,9 +32,10 @@ const signupSchema = yup.object({
 })
 
 function SignUpUserPage() {
-  const navigate = useNavigate()
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   const {
     register,
@@ -47,6 +48,7 @@ function SignUpUserPage() {
 
   const onSubmit = async (data) => {
     setError('')
+    setSuccess('')
     setLoading(true)
 
     try {
@@ -57,13 +59,7 @@ function SignUpUserPage() {
         role: data.role
       })
 
-      // Store token in localStorage after signup
-      localStorage.setItem('authToken', response.data.token)
-      localStorage.setItem('userEmail', response.data.email)
-
-      // Show success message and redirect to login
-      alert('Signup successful! Please login with your credentials.')
-      navigate('/login')
+      setSuccess(response.data.message)
     } catch (err) {
       setError(
         err?.response?.data?.message ||
@@ -107,6 +103,7 @@ function SignUpUserPage() {
                 </div>
               )}
 
+              {success && <div className="alert alert-success" role="status">{success} <Link to="/login">Sign in</Link></div>}
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label fw-semibold">

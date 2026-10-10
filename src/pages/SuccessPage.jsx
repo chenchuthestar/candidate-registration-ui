@@ -30,7 +30,7 @@ function SuccessPage() {
                 View All Registrations
               </Link>
 
-              <Link to="/signup" className="btn btn-outline-secondary">
+              <Link to="/jobseeker-registration" className="btn btn-outline-secondary">
                 Register Another Candidate
               </Link>
             </div>
